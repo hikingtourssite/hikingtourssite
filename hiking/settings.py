@@ -72,9 +72,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hiking.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -82,7 +79,7 @@ DATABASES = {
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
-        'PORT': '5432',
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
 
