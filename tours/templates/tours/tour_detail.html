@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ tour.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body class="bg-light">
+
+<div class="container mt-4">
+    <a href="{% url 'tour_list' %}" class="btn btn-secondary mb-3">← Назад до турів</a>
+
+    <div class="card">
+        {% if tour.image %}
+            <img src="{{ tour.image.url }}" class="card-img-top" alt="{{ tour.title }}">
+        {% endif %}
+        <div class="card-body">
+            <h2 class="card-title">{{ tour.title }}</h2>
+            <p class="card-text"><strong>Локація:</strong> {{ tour.location }}</p>
+            <p class="card-text"><strong>Дата:</strong> {{ tour.start_date }} – {{ tour.end_date }}</p>
+            <p class="card-text"><strong>Гід:</strong> {{ tour.guide_name }}</p>
+            <p class="card-text"><strong>Складність:</strong> {{ tour.difficulty }}</p>
+            <p class="card-text"><strong>Вартість:</strong>{{ tour.price }} грн.</p>
+            <p class="card-text">{{ tour.description }}</p>
+
+            <!-- Signup button (will link to booking form later) -->
+            <a href="{% url 'book_tour' tour.pk %}" class="btn btn-success mt-3">Зареєструватися</a>
+
+<hr class="my-5">
+
+
+<div id="map" style="height: 500px;" class="mb-4"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([48.2, 24.6], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    var route = {{ route|safe }};
+    var latlngs = [];
+
+    route.forEach(function(point) {
+        latlngs.push([point.lat, point.lon]);
+        L.marker([point.lat, point.lon]).addTo(map).bindPopup(point.name);
+    });
+
+    L.polyline(latlngs, {color: 'blue'}).addTo(map);
+</script>
+
+
+
+
+<h4>Відгуки</h4>
+
+<!-- Show list of reviews -->
+{% for review in reviews %}
+    <div class="mb-3">
+        <strong>{{ review.name }}</strong>
+        <span class="text-muted"> ({{ review.created_at|date:"F j, Y" }})</span><br>
+        <small>Rating: {{ review.rating }}/5</small>
+        <p>{{ review.text }}</p>
+    </div>
+{% empty %}
+    <p>No reviews yet.</p>
+{% endfor %}
+
+<hr class="my-4">
+
+<!-- Leave a new review -->
+<h5>Залишити відгук</h5>
+<form method="post">
+    {% csrf_token %}
+    {{ review_form.as_p }}
+    <button type="submit" class="btn btn-outline-primary">Надіслати</button>
+</form>
+
+            
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
