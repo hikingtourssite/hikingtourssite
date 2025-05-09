@@ -12,4 +12,8 @@ RUN pip install --root-user-action=ignore -r requirements.txt
 
 COPY . .
 
-CMD sh -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn hiking.wsgi:application --bind 0.0.0.0:8000"
+# Додати дозвіл на виконання скрипта
+RUN chmod +x entrypoint.sh
+
+# Запуск через наш скрипт
+CMD ["./entrypoint.sh"]
