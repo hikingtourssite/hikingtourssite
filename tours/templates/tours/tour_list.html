@@ -69,7 +69,7 @@
                         <h5 class="card-title">{{ tour.title }}</h5>
                         <p class="card-text">{{ tour.start_date }} – {{ tour.end_date }}</p>
                         <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="fw-bold text-end">{{ tour.price }} грн.</span>
+                            <span class="fw-bold text-end">{{ tour.price|floatformat:"0" }} грн.</span>
                             <a href="{% url 'tour_detail' tour.pk %}" class="btn btn-success">Детальніше</a>                            
                         </div>
                         

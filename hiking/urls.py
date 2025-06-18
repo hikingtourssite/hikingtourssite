@@ -37,6 +37,8 @@ urlpatterns = [
     # Include accounts app routes under "/accounts/"
     path('accounts/', include('accounts.urls')),
 
+    #path('models-view/', include('django_model_viewer.urls')),
+
 ]
 
 # Add serving of static and media files in development mode

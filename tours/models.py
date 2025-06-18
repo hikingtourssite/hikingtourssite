@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Represents a single hiking tour
+# Тур
 class Tour(models.Model):
     title = models.CharField(max_length=200, verbose_name="Тур")  # Name of the tour
     description = models.TextField(verbose_name="Опис")  # Detailed description of the tour
@@ -22,7 +22,7 @@ class Tour(models.Model):
         verbose_name = "Тур"
         verbose_name_plural = "Тури"
 
-# Represents a booking for a tour made by a user
+# Реєстрація на тур
 class Booking(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, verbose_name="Тур")  # The tour that is being booked
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Користувач")  # New!
@@ -39,7 +39,7 @@ class Booking(models.Model):
         verbose_name = "Бронювання"
         verbose_name_plural = "Бронювання"
 
-# Represents a review left by a participant after the tour
+# Відгук на тур
 class Review(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='reviews', verbose_name="Тур")  # Tour being reviewed
     name = models.CharField(max_length=100, verbose_name="Ім'я")  # Name of the reviewer
@@ -54,6 +54,7 @@ class Review(models.Model):
         verbose_name = "Відгук"
         verbose_name_plural = "Відгуки"
 
+# Точки на інтерактивній карті
 class TourStop(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='stops', verbose_name="Тур")
     name = models.CharField(max_length=100, verbose_name="Назва точки")
