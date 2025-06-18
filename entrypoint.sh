@@ -3,6 +3,9 @@
 echo "Running migrations..."
 python manage.py migrate --noinput
 
+echo "Loading initial tour data (якщо база порожня)..."
+python manage.py loaddata fixtures/tours_fixture.json || echo "Fixtures already loaded or failed — ігноруємо"
+
 echo "Creating superuser..."
 python manage.py shell << END
 from django.contrib.auth import get_user_model
